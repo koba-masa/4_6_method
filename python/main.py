@@ -180,7 +180,75 @@ class FourSixMethod:
 
 
     def execute(self):
-        pass
+        status = self.STATUSES["powder"]
+        while True:
+            if status == self.STATUSES["powder"]:
+                print(f"powder  /{self.next_btn.value()}{self.decide_btn.value()}{self.reset_btn.value()}")
+                status = self.__select_powder()
+            elif status == self.STATUSES["taste"]:
+                print(f"taste   /{self.next_btn.value()}{self.decide_btn.value()}{self.reset_btn.value()}")
+                status = self.__select_taste()
+            elif status == self.STATUSES["strength"]:
+                print(f"strength/{self.next_btn.value()}{self.decide_btn.value()}{self.reset_btn.value()}")
+                status = self.__select_strength()
+            elif status == self.STATUSES["drip"]:
+                print(f"drip    /{self.next_btn.value()}{self.decide_btn.value()}{self.reset_btn.value()}")
+                self.__drip()
+                break
+            time.sleep(0.1)
+
+
+    def __select_powder(self) -> int:
+        selection = 0
+        while True:
+            texts = ["Select powder."]
+            texts.extend([f" {'>' if selection == i else ' ' } {self.POWDERS[i]} g" for i in range(len(self.POWDERS))])
+            self.__display(texts)
+            if self.decide_btn.value() == 1:
+                return self.STATUSES["taste"]
+            elif self.reset_btn.value() == 1:
+                return self.STATUSES["powder"]
+            elif self.next_btn.value() == 1:
+                selection = 0 if selection >= (len(self.POWDERS) - 1) else (selection + 1)
+
+            time.sleep(0.1)
+
+
+    def __select_taste(self) -> int:
+        selection = 0
+        while True:
+            texts = ["Select taste."]
+            texts.extend([f" {'>' if selection == i else ' ' } {self.TASTES[i]}" for i in range(len(self.TASTES))])
+            self.__display(texts)
+            if self.decide_btn.value() == 1:
+                return self.STATUSES["strength"]
+            elif self.reset_btn.value() == 1:
+                return self.STATUSES["powder"]
+            elif self.next_btn.value() == 1:
+                selection = 0 if selection >= (len(self.TASTES) - 1) else (selection + 1)
+
+            time.sleep(0.1)
+
+
+    def __select_strength(self) -> int:
+        selection = 0
+        while True:
+            texts = ["Select strength."]
+            texts.extend([f" {'>' if selection == i else ' ' } {self.STRENGTHS[i]}" for i in range(len(self.STRENGTHS))])
+            self.__display(texts)
+            if self.decide_btn.value() == 1:
+                return self.STATUSES["drip"]
+            elif self.reset_btn.value() == 1:
+                return self.STATUSES["taste"]
+            elif self.next_btn.value() == 1:
+                selection = 0 if selection >= (len(self.STRENGTHS) - 1) else (selection + 1)
+
+            time.sleep(0.1)
+
+
+    def __drip(self) -> int:
+        self.__display(["dripping..."])
+
 
     def __display(self, texts):
         self.oled.fill(0)
