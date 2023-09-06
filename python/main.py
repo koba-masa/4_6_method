@@ -158,6 +158,7 @@ class SSD1306_SPI(SSD1306):
 
 # =====================================================================================================
 
+# =====================================================================================================
 from machine import Pin, I2C
 import time
 
@@ -173,67 +174,13 @@ class FourSixMethod:
         self.oled = SSD1306_I2C(128, 64, i2c)
 
         self.led = Pin("LED", Pin.OUT)
-        self.next_btn = Pin(14, Pin.IN, Pin.PULL_UP)
-        self.decide_btn = Pin(15, Pin.IN, Pin.PULL_UP)
-        self.reset_btn = Pin(19, Pin.IN, Pin.PULL_UP)
+        self.next_btn = Pin(13, Pin.IN, Pin.PULL_DOWN)
+        self.decide_btn = Pin(14, Pin.IN, Pin.PULL_DOWN)
+        self.reset_btn = Pin(15, Pin.IN, Pin.PULL_DOWN)
 
 
     def execute(self):
-        self.status = 0
-
-        while True:
-            if self.status == self.STATUSES["powder"]:
-                self.status = self.__select_powder()
-            elif self.status == self.STATUSES["taste"]:
-                self.status = self.__select_taste()
-            elif self.status == self.STATUSES["strength"]:
-                self.status = self.__select_strength()
-            else:
-                self.status = self.__drip()
-
-
-    def __select_powder(self):
-        selection = 0
-        while True:
-            if self.decide_btn.value() == 1:
-                return self.STATUSES["taste"]
-            elif self.reset_btn.value() == 1:
-                return self.STATUSES["powder"]
-            elif self.next_btn.value() == 1:
-                selection +=1
-                if selection > (len(self.POWDERS) - 1):
-                    selection = 0
-
-
-    def __select_taste(self):
-        selection = 0
-        while True:
-            if self.decide_btn.value() == 1:
-                return self.STATUSES["strength"]
-            elif self.reset_btn.value() == 1:
-                return self.STATUSES["powder"]
-            elif self.next_btn.value() == 1:
-                selection +=1
-                if selection > (len(self.TASTES) - 1):
-                    selection = 0
-
-
-    def __select_strength(self):
-        while True:
-            if self.decide_btn.value() == 1:
-                return self.STATUSES["drip"]
-            elif self.reset_btn.value() == 1:
-                return self.STATUSES["taste"]
-            elif self.next_btn.value() == 1:
-                selection +=1
-                if selection > (len(self.STRENGTHS) - 1):
-                    selection = 0
-
-
-    def __drip(self):
-        if self.reset_btn.value() == 1:
-            return self.STATUSES["powder"]
-
+        pass
 
     def __display(self, texts):
         self.oled.fill(0)
