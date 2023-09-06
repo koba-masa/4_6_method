@@ -256,7 +256,28 @@ class FourSixMethod:
 
 
     def __drip(self) -> int:
-        self.__display(["dripping..."])
+        a_amount_of_water = self.powder * 15
+        a_amount_of_water_for_taste = round(a_amount_of_water / 10 * 4)
+        first = round(a_amount_of_water_for_taste / 5 * self.taste)
+        a_mount_of_water_for_strength = a_amount_of_water - a_amount_of_water_for_taste
+        water_per_strength =  a_mount_of_water_for_strength / self.strength
+        texts = [
+            "dripping...",
+            f"{first} {a_amount_of_water_for_taste}",
+            self.__drip_water_for_strength(a_amount_of_water_for_taste, water_per_strength, self.strength),
+        ]
+        self.__display(texts)
+
+        return self.STATUSES["powder"]
+
+
+    def __drip_water_for_strength(self, a_amount_of_water_for_taste, water_per_strength: int, count:int) -> str:
+        message = ""
+        for i in range(count):
+            dripped_water = round(a_amount_of_water_for_taste + water_per_strength + (water_per_strength * i))
+            message = f"{message}{dripped_water} "
+        return message
+
 
 
     def __display(self, texts):
