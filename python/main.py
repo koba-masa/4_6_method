@@ -165,7 +165,7 @@ import time
 class FourSixMethod:
     STATUSES = { "powder": 0, "taste": 1, "strength": 2, "drip": 3  }
     POWDERS = [10, 20, 30, 40]
-    TASTES = ['sweet', 'normal', 'bitter']
+    TASTES = {'sweet': 2, 'normal': 2.5, 'bitter': 3}
     STRENGTHS = {'light': 1, 'normal': 2, 'strong': 3}
 
 
@@ -218,16 +218,19 @@ class FourSixMethod:
 
     def __select_taste(self) -> int:
         selection = 0
+        length = len(list(self.TASTES.keys()))
+        keys = list(self.TASTES.keys())
         while True:
             texts = ["Select taste."]
-            texts.extend([f" {'>' if selection == i else ' ' } {self.TASTES[i]}" for i in range(len(self.TASTES))])
+            texts.extend([f" {'>' if selection == i else ' ' } {keys[i]}" for i in range(length)])
             self.__display(texts)
             if self.decide_btn.value() == 1:
+                self.taste = self.TASTES[keys[selection]]
                 return self.STATUSES["strength"]
             elif self.reset_btn.value() == 1:
                 return self.STATUSES["powder"]
             elif self.next_btn.value() == 1:
-                selection = 0 if selection >= (len(self.TASTES) - 1) else (selection + 1)
+                selection = 0 if selection >= (length - 1) else (selection + 1)
 
             time.sleep(0.1)
 
