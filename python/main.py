@@ -166,7 +166,7 @@ class FourSixMethod:
     STATUSES = { "powder": 0, "taste": 1, "strength": 2, "drip": 3  }
     POWDERS = [10, 20, 30, 40]
     TASTES = ['sweet', 'normal', 'bitter']
-    STRENGTHS = ['light', 'normal', 'strong']
+    STRENGTHS = {'light': 1, 'normal': 2, 'strong': 3}
 
 
     def __init__(self):
@@ -234,16 +234,20 @@ class FourSixMethod:
 
     def __select_strength(self) -> int:
         selection = 0
+        length = len(list(self.STRENGTHS.keys()))
+        # FIXME: ここでkeysを取得すると、keysの順番が変わってしまう
+        keys = list(self.STRENGTHS.keys())
         while True:
             texts = ["Select strength."]
-            texts.extend([f" {'>' if selection == i else ' ' } {self.STRENGTHS[i]}" for i in range(len(self.STRENGTHS))])
+            texts.extend([f" {'>' if selection == i else ' ' } {keys[i]}" for i in range(length)])
             self.__display(texts)
             if self.decide_btn.value() == 1:
+                self.strength = self.STRENGTHS[keys[selection]]
                 return self.STATUSES["drip"]
             elif self.reset_btn.value() == 1:
                 return self.STATUSES["taste"]
             elif self.next_btn.value() == 1:
-                selection = 0 if selection >= (len(self.STRENGTHS) - 1) else (selection + 1)
+                selection = 0 if selection >= (length - 1) else (selection + 1)
 
             time.sleep(0.1)
 
