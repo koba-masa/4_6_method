@@ -194,6 +194,7 @@ class FourSixMethod:
             elif status == self.STATUSES["drip"]:
                 print(f"drip    /{self.next_btn.value()}{self.decide_btn.value()}{self.reset_btn.value()}")
                 self.__drip()
+                status = self.STATUSES["powder"]
                 break
             time.sleep(0.1)
 
@@ -205,6 +206,7 @@ class FourSixMethod:
             texts.extend([f" {'>' if selection == i else ' ' } {self.POWDERS[i]} g" for i in range(len(self.POWDERS))])
             self.__display(texts)
             if self.decide_btn.value() == 1:
+                self.powder = self.POWDERS[selection]
                 return self.STATUSES["taste"]
             elif self.reset_btn.value() == 1:
                 return self.STATUSES["powder"]
